@@ -1,60 +1,81 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #222;
+  background-color: #1a293d;
   color: #fff;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevent scrollbars */
+  overflow-x: hidden; /* Prevent horizontal scrollbars */
 }
 
 .container {
-  width: 300px;
-  height: 400px;
+  width: 350px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
 .header {
-  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.search-bar {
-  background-color: #444;
-  border-radius: 8px;
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header-buttons {
   display: flex;
   align-items: center;
-  padding: 5px;
 }
 
-.search-bar input[type="text"] {
-  background-color: transparent;
+.settings-button {
+  background-image: url('images/settings.png'); /* Replace with your settings icon */
+  background-size: cover;
+  width: 24px;
+  height: 24px;
   border: none;
-  color: #fff;
-  padding: 8px;
-  width: 100%;
-  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
-.search-icon {
-  /* Add search icon here (e.g., using a background image or font icon) */
+.new-profile-button {
+  background-color: #498af2;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profiles-title {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 #profiles {
   flex-grow: 1;
   overflow-y: auto;
-  padding: 10px;
+  padding-right: 10px;
 }
 
 .profile {
-  background-color: #333;
-  border-radius: 8px;
-  padding: 10px;
+  background-color: #2c3e50;
+  border-radius: 10px;
+  padding: 15px;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile h3 {
   margin-top: 0;
   margin-bottom: 5px;
+  font-size: 16px;
 }
 
 .profile p {
@@ -63,22 +84,23 @@ body {
   color: #ccc;
 }
 
-.add-profile-button {
-  background-color: #007bff;
+.profile-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.fill-button,
+.edit-button,
+.delete-button {
+  background-color: #498af2;
   color: #fff;
   border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 5px 8px;
+  border-radius: 5px;
   cursor: pointer;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 10;
+  margin-left: 5px;
+  font-size: 0.8em;
 }
 
 /* Scrollbar styling */
@@ -87,7 +109,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #222;
+  background: #1a293d;
 }
 
 ::-webkit-scrollbar-thumb {

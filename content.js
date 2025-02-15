@@ -7,6 +7,7 @@ function setFormValues(profile) {
     'lastName': ['lastName', 'familyName', 'lname', 'lName'],
     'phoneNumber': ['phoneNumber', 'phone', 'phoneNum', 'phone_number'],
     'address': ['address', 'streetAddress', 'street_address', 'addr'],
+    'address2': ['address2', 'addressLine2', 'apartment', 'apt'],
     'city': ['city', 'town'],
     'state': ['state', 'province'],
     'zip': ['zip', 'zipCode', 'postalCode', 'postcode'],
