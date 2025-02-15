@@ -84,7 +84,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     for (const field in fields) {
       fields[field].forEach(name => {
-        const elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i], select[id*="${name}" i]`);
+        let elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i], select[id*="${name}" i]`);
+
+        if (field === 'ssn') {
+          // Handle split SSN fields
+          const ssnElements = Array.from(elements).filter(el => el.type === 'text' && el.maxLength === 3);
+          if (ssnElements.length === 3) {
+            const ssnValue = profile[field] || '';
+            const ssnParts = ssnValue.split('-'); // Split the SSN by hyphens
+            if (ssnParts.length === 3) {
+              ssnElements[0].value = ssnParts[0];
+              ssnElements[1].value = ssnParts[1];
+              ssnElements[2].value = ssnParts[2];
+            } else {
+              console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
+            }
+            return; // Skip the default filling logic
+          }
+        }
+
         elements.forEach(element => {
           if (element) {
             if (element.tagName === 'SELECT') {
