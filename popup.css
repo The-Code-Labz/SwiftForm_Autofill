@@ -1,0 +1,23 @@
+body {
+  width: 300px;
+  padding: 10px;
+}
+
+input[type="text"] {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 5px;
+}
+
+#profiles {
+  margin-top: 10px;
+}
+
+.profile {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-bottom: 5px;
+}
