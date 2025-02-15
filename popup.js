@@ -84,10 +84,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     for (const field in fields) {
       fields[field].forEach(name => {
-        const elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], textarea[id*="${name}" i]`);
+        const elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i], select[id*="${name}" i]`);
         elements.forEach(element => {
           if (element) {
-            element.value = profile[field] || '';
+            if (element.tagName === 'SELECT') {
+              // For dropdowns, set the selected option
+              const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
+              if (optionToSelect) {
+                optionToSelect.selected = true;
+              }
+            } else {
+              element.value = profile[field] || '';
+            }
           }
         });
       });

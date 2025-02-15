@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('fullName').value = profile.fullName || '';
     document.getElementById('emailAddress').value = profile.emailAddress || '';
     document.getElementById('phoneNumber').value = profile.phoneNumber || '';
+    document.getElementById('dob').value = profile.dob || '';
     document.getElementById('address').value = profile.address || '';
     document.getElementById('address2').value = profile.address2 || '';
     document.getElementById('city').value = profile.city || '';
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
       fullName: document.getElementById('fullName').value,
       emailAddress: document.getElementById('emailAddress').value,
       phoneNumber: document.getElementById('phoneNumber').value,
+      dob: document.getElementById('dob').value,
       address: document.getElementById('address').value,
       address2: document.getElementById('address2').value,
       city: document.getElementById('city').value,
