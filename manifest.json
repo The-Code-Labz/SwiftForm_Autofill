@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Form Autofill Extension",
+  "name": "SwiftForm Autofill",
   "version": "1.0",
   "description": "Automates form filling with profile management.",
   "permissions": [
