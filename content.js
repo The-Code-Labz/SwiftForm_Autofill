@@ -48,6 +48,8 @@ function setFormValues(profile) {
                 const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
                 if (optionToSelect) {
                   optionToSelect.selected = true;
+                } else if (element.options.length > 0) {
+                  element.options[0].selected = true;
                 }
               } else {
                 element.value = profile[field] || '';
