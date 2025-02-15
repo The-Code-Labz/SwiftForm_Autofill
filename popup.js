@@ -97,9 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const ssnValue = profile[field] || '';
             const ssnParts = ssnValue.split('-'); // Split the SSN by hyphens
             if (ssnParts.length === 3) {
-              ssn1.value = ssnParts[0];
-              ssn2.value = ssnParts[1];
-              ssn3.value = ssnParts[2];
+              ssn1.value = ssnParts[0] || '';
+              ssn2.value = ssnParts[1] || '';
+              ssn3.value = ssnParts[2] || '';
             } else {
               console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
             }
@@ -109,22 +109,22 @@ document.addEventListener('DOMContentLoaded', function() {
           // Handle full name splitting
           const fullName = profile[field] || '';
           const nameParts = fullName.split(' ');
-          if (nameParts.length >= 2) {
-            const firstName = nameParts[0];
-            const lastName = nameParts.slice(1).join(' ');
+          if (nameParts.length >= 1) {
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
 
             // Find and fill first name and last name fields
             fields['firstName'].forEach(firstNameName => {
               const firstNameElements = document.querySelectorAll(`input[name*="${firstNameName}" i], input[id*="${firstNameName}" i]`);
               firstNameElements.forEach(el => {
-                el.value = firstName;
+                if (el) el.value = firstName;
               });
             });
 
             fields['lastName'].forEach(lastNameName => {
               const lastNameElements = document.querySelectorAll(`input[name*="${lastNameName}" i], input[id*="${lastNameName}" i]`);
               lastNameElements.forEach(el => {
-                el.value = lastName;
+                if (el) el.value = lastName;
               });
             });
             return;
