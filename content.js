@@ -23,10 +23,10 @@ function setFormValues(profile) {
       let elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i], select[id*="${name}" i]`);
 
       if (field === 'ssn') {
-        // Handle split SSN fields with identifiers ssn1, ssn2, ssn3
-        const ssn1 = document.querySelector('input[id*="ssn1" i], input[name*="ssn1" i]');
-        const ssn2 = document.querySelector('input[id*="ssn2" i], input[name*="ssn2" i]');
-        const ssn3 = document.querySelector('input[id*="ssn3" i], input[name*="ssn3" i]');
+        // Handle split SSN fields with identifiers ssn_1, ssn_2, ssn_3
+        const ssn1 = document.querySelector('input[id="ssn_1"][name="ssn_1"]');
+        const ssn2 = document.querySelector('input[id="ssn_2"][name="ssn_2"]');
+        const ssn3 = document.querySelector('input[id="ssn_3"][name="ssn_3"]');
 
         if (ssn1 && ssn2 && ssn3) {
           const ssnValue = profile[field] || '';
