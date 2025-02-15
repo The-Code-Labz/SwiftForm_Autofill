@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <h3>${profile.firstName} ${profile.lastName}</h3>
         <p>Email: ${profile.emailAddress}</p>
         <button class="fillButton" data-index="${index}">Fill Form</button>
+        <button class="editButton" data-index="${index}">Edit</button>
       `;
       profilesDiv.appendChild(profileDiv);
 
@@ -47,6 +48,14 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
           const index = this.dataset.index;
           fillForm(profiles[index]);
+        });
+      });
+
+      const editButtons = document.querySelectorAll('.editButton');
+      editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const index = this.dataset.index;
+          editProfile(index);
         });
       });
     });
@@ -117,4 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Open a new tab or window to add a profile
     chrome.tabs.create({ url: 'profile.html' });
   });
+
+  function editProfile(index) {
+    chrome.storage.sync.set({ 'editIndex': index }, function() {
+      chrome.tabs.create({ url: 'profile.html?edit=true' });
+    });
+  }
 });
