@@ -1,19 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('search');
-  const lockButton = document.getElementById('lock');
   const profilesDiv = document.getElementById('profiles');
   const addProfileButton = document.getElementById('addProfile');
 
   let profiles = [];
-  let locked = false;
 
   // Load profiles from storage
   loadProfiles();
 
   function loadProfiles() {
-    chrome.storage.sync.get(['profiles', 'locked'], function(data) {
+    chrome.storage.sync.get(['profiles'], function(data) {
       profiles = data.profiles || [];
-      locked = data.locked || false;
       updateUI();
     });
   }
@@ -23,9 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateUI() {
-    // Update lock button text
-    lockButton.textContent = locked ? 'Unlock' : 'Lock';
-
     // Display profiles
     displayProfiles(profiles);
   }
@@ -62,10 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function fillForm(profile) {
-    if (locked) {
-      alert('Extension is locked. Unlock to fill forms.');
-      return;
-    }
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -103,14 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   }
-
-  // Lock functionality
-  lockButton.addEventListener('click', function() {
-    locked = !locked;
-    chrome.storage.sync.set({ 'locked': locked }, function() {
-      updateUI();
-    });
-  });
 
   // Search functionality
   searchInput.addEventListener('input', function() {
