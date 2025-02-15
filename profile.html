@@ -5,52 +5,66 @@
   <link rel="stylesheet" href="profile.css">
 </head>
 <body>
-  <h1>Add/Edit Profile</h1>
-  <form id="profileForm">
-    <label for="profileName">Profile Name:</label>
-    <input type="text" id="profileName" name="profileName"><br><br>
+  <div class="container">
+    <div class="profile-icon">
+      <!-- Add profile icon here -->
+    </div>
 
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" name="firstName"><br><br>
+    <label for="profileName">Title (required):</label>
+    <input type="text" id="profileName" name="profileName" required><br><br>
 
-    <label for="middleName">Middle Name:</label>
-    <input type="text" id="middleName" name="middleName"><br><br>
+    <h2>Contact Details</h2>
+    <label for="fullName">Full Name (required):</label>
+    <input type="text" id="fullName" name="fullName" required><br><br>
 
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName"><br><br>
-
-    <label for="phoneNumber">Phone Number:</label>
-    <input type="text" id="phoneNumber" name="phoneNumber"><br><br>
-
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address"><br><br>
-
-    <label for="city">City:</label>
-    <input type="text" id="city" name="city"><br><br>
-
-    <label for="state">State:</label>
-    <input type="text" id="state" name="state"><br><br>
-
-    <label for="zip">Zip:</label>
-    <input type="text" id="zip" name="zip"><br><br>
-
-    <label for="dob">Date of Birth:</label>
-    <input type="text" id="dob" name="dob"><br><br>
-
-    <label for="ssn">SSN:</label>
-    <input type="text" id="ssn" name="ssn"><br><br>
-
-    <label for="emailAddress">Email Address:</label>
+    <label for="emailAddress">Email:</label>
     <input type="email" id="emailAddress" name="emailAddress"><br><br>
 
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username"><br><br>
+    <label for="phoneNumber">Phone:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber"><br><br>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password"><br><br>
+    <h2>Address Details</h2>
+    <label for="address">Address Line 1:</label>
+    <input type="text" id="address" name="address" placeholder="Street address, P.O. box, etc."><br><br>
 
-    <button type="submit">Save Profile</button>
-  </form>
+    <label for="address2">Address Line 2:</label>
+    <input type="text" id="address2" name="address2" placeholder="Apartment, suite, building, floor, etc."><br><br>
+
+    <div class="city-state-zip">
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city"><br><br>
+
+      <label for="state">State or Province:</label>
+      <input type="text" id="state" name="state"><br><br>
+
+      <label for="zip">ZIP or Postal Code:</label>
+      <input type="text" id="zip" name="zip"><br><br>
+
+      <label for="country">Country or Region:</label>
+      <select id="country" name="country">
+        <option value="">Select Country</option>
+        <!-- Add country options here -->
+      </select><br><br>
+    </div>
+
+    <h2>Custom Fields</h2>
+    <button type="button" class="add-field">+ Add Field</button><br><br>
+
+    <h2>Other</h2>
+    <label for="folder">Folder:</label>
+    <select id="folder" name="folder">
+      <option value="">Select Folder</option>
+      <!-- Add folder options here -->
+    </select><br><br>
+
+    <label for="note">Note:</label>
+    <textarea id="note" name="note"></textarea><br><br>
+
+    <div class="buttons">
+      <button type="submit" class="save">Save</button>
+      <button type="button" class="cancel">Cancel</button>
+    </div>
+  </div>
   <script src="profile.js"></script>
 </body>
 </html>
