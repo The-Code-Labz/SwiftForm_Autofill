@@ -87,73 +87,92 @@ document.addEventListener('DOMContentLoaded', function() {
       fields[field].forEach(name => {
         let elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i], select[id*="${name}" i]`);
 
-      if (field === 'ssn') {
-        // Handle split SSN fields with identifiers ssn_1, ssn_2, ssn_3
-        const ssn1 = document.querySelector('input[id="ssn_1" i][name="ssn_1" i]');
-        const ssn2 = document.querySelector('input[id="ssn_2" i][name="ssn_2" i]');
-        const ssn3 = document.querySelector('input[id="ssn_3" i][name="ssn_3" i]');
+        if (field === 'ssn') {
+          // Handle split SSN fields with identifiers ssn_1, ssn_2, ssn_3
+          const ssn1 = document.querySelector('input[id="ssn_1"][name="ssn_1"]');
+          const ssn2 = document.querySelector('input[id="ssn_2"][name="ssn_2"]');
+          const ssn3 = document.querySelector('input[id="ssn_3"][name="ssn_3"]');
 
-        if (ssn1 && ssn2 && ssn3) {
-          const ssnValue = profile[field] || '';
-          const ssnParts = ssnValue.split('-'); // Split the SSN by hyphens
-          if (ssnParts.length === 3) {
-            ssn1.value = ssnParts[0] || '';
-            ssn2.value = ssnParts[1] || '';
-            ssn3.value = ssnParts[2] || '';
-          } else {
-            console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
-          }
-          return; // Skip the default filling logic
-        }
-      } else if (field === 'fullName') {
-        // Handle full name splitting
-        const fullName = profile[field] || '';
-        const nameParts = fullName.split(' ');
-        if (nameParts.length >= 1) {
-          const firstName = nameParts[0] || '';
-          const lastName = nameParts.slice(1).join(' ') || '';
-
-          // Find and fill first name and last name fields
-          fields['firstName'].forEach(firstNameName => {
-            const firstNameElements = document.querySelectorAll(`input[name*="${firstNameName}" i], input[id*="${firstNameName}" i]`);
-            firstNameElements.forEach(el => {
-              if (el) el.value = firstName;
-            });
-          });
-
-          fields['lastName'].forEach(lastNameName => {
-            const lastNameElements = document.querySelectorAll(`input[name*="${lastNameName}" i], input[id*="${lastNameName}" i]`);
-            lastNameElements.forEach(el => {
-              if (el) el.value = lastName;
-            });
-          });
-          return;
-        } else {
-          console.warn('Full name format in profile is incorrect. Expected format: First Last');
-        }
-      }
-
-      elements.forEach(element => {
-        if (element) {
-          if (element.tagName === 'SELECT') {
-            // For dropdowns, set the selected option
-            const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
-            if (optionToSelect) {
-              optionToSelect.selected = true;
+          if (ssn1 && ssn2 && ssn3) {
+            const ssnValue = profile[field] || '';
+            const ssnParts = ssnValue.split('-'); // Split the SSN by hyphens
+            if (ssnParts.length === 3) {
+              ssn1.value = ssnParts[0] || '';
+              ssn2.value = ssnParts[1] || '';
+              ssn3.value = ssnParts[2] || '';
+            } else {
+              console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
             }
+            return; // Skip the default filling logic
+          }
+        } else if (field === 'fullName') {
+          // Handle full name splitting
+          const fullName = profile[field] || '';
+          const nameParts = fullName.split(' ');
+          if (nameParts.length >= 1) {
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
+
+            // Find and fill first name and last name fields
+            fields['firstName'].forEach(firstNameName => {
+              const firstNameElements = document.querySelectorAll(`input[name*="${firstNameName}" i], input[id*="${firstNameName}" i]`);
+              firstNameElements.forEach(el => {
+                if (el) el.value = firstName;
+              });
+            });
+
+            fields['lastName'].forEach(lastNameName => {
+              const lastNameElements = document.querySelectorAll(`input[name*="${lastNameName}" i], input[id*="${lastNameName}" i]`);
+              lastNameElements.forEach(el => {
+                if (el) el.value = lastName;
+              });
+            });
+            return;
           } else {
-            element.value = profile[field] || '';
+            console.warn('Full name format in profile is incorrect. Expected format: First Last');
           }
         }
-      });
-    });
-  }
-}
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.message === "fillForm") {
-      setFormValues(request.profile);
+        elements.forEach(element => {
+          if (element) {
+            if (element.tagName === 'SELECT') {
+              // For dropdowns, set the selected option
+              const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
+              if (optionToSelect) {
+                optionToSelect.selected = true;
+              }
+            } else {
+              element.value = profile[field] || '';
+            }
+          }
+        });
+      });
     }
   }
-);
+
+  // Search functionality
+  searchInput.addEventListener('input', function() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredProfiles = profiles.filter(profile => {
+      return (
+        profile.profileName.toLowerCase().includes(searchTerm) ||
+        profile.firstName.toLowerCase().includes(searchTerm) ||
+        profile.lastName.toLowerCase().includes(searchTerm) ||
+        profile.emailAddress.toLowerCase().includes(searchTerm)
+      );
+    });
+    displayProfiles(filteredProfiles);
+  });
+
+  // Add profile functionality
+  addProfileButton.addEventListener('click', function() {
+    // Open a new tab or window to add a profile
+    chrome.tabs.create({ url: 'profile.html' });
+  });
+
+  function editProfile(index) {
+    chrome.storage.sync.set({ 'editIndex': index }, function() {
+      chrome.tabs.create({ url: 'profile.html?edit=true' });
+    });
+  }
+});
