@@ -19,14 +19,15 @@ body {
 }
 
 h1, h2 {
-  text-align: center;
+  text-align: left;
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   color: #fff;
 }
 
@@ -37,7 +38,7 @@ select,
 textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   border: none;
   background-color: #34495e;
   color: #fff;
@@ -48,16 +49,26 @@ textarea {
 .city-state-zip {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.city-state-zip label {
+  width: 100%;
 }
 
 .city-state-zip input[type="text"],
 .city-state-zip select {
   width: 48%;
+  margin-bottom: 15px;
 }
 
-.add-field,
-.save,
-.cancel {
+.buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.buttons button {
+  margin: 0 10px;
   background-color: #3498db;
   color: #fff;
   border: none;
@@ -67,18 +78,8 @@ textarea {
   transition: background-color 0.3s;
 }
 
-.add-field:hover,
-.save:hover,
-.cancel:hover {
+.buttons button:hover {
   background-color: #2980b9;
-}
-
-.buttons {
-  text-align: center;
-}
-
-.buttons button {
-  margin: 0 10px;
 }
 
 .profile-icon {

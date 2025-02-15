@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('state').value = profile.state || '';
     document.getElementById('zip').value = profile.zip || '';
     document.getElementById('country').value = profile.country || '';
+    document.getElementById('ssn').value = profile.ssn || '';
+    document.getElementById('username').value = profile.username || '';
+    document.getElementById('password').value = profile.password || '';
     document.getElementById('note').value = profile.note || '';
     document.getElementById('folder').value = profile.folder || '';
   }
@@ -46,6 +49,9 @@ document.addEventListener('DOMContentLoaded', function() {
       state: document.getElementById('state').value,
       zip: document.getElementById('zip').value,
       country: document.getElementById('country').value,
+      ssn: document.getElementById('ssn').value,
+      username: document.getElementById('username').value,
+      password: document.getElementById('password').value,
       note: document.getElementById('note').value,
       folder: document.getElementById('folder').value
     };
