@@ -88,15 +88,18 @@ document.addEventListener('DOMContentLoaded', function() {
         let elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i], select[id*="${name}" i]`);
 
         if (field === 'ssn') {
-          // Handle split SSN fields
-          const ssnElements = Array.from(elements).filter(el => el.type === 'text' && el.maxLength === 3);
-          if (ssnElements.length === 3) {
+          // Handle split SSN fields with identifiers ssn1, ssn2, ssn3
+          const ssn1 = document.querySelector('input[id*="ssn1" i], input[name*="ssn1" i]');
+          const ssn2 = document.querySelector('input[id*="ssn2" i], input[name*="ssn2" i]');
+          const ssn3 = document.querySelector('input[id*="ssn3" i], input[name*="ssn3" i]');
+
+          if (ssn1 && ssn2 && ssn3) {
             const ssnValue = profile[field] || '';
             const ssnParts = ssnValue.split('-'); // Split the SSN by hyphens
             if (ssnParts.length === 3) {
-              ssnElements[0].value = ssnParts[0];
-              ssnElements[1].value = ssnParts[1];
-              ssnElements[2].value = ssnParts[2];
+              ssn1.value = ssnParts[0];
+              ssn2.value = ssnParts[1];
+              ssn3.value = ssnParts[2];
             } else {
               console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
             }
