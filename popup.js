@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const profileDiv = document.createElement('div');
       profileDiv.classList.add('profile');
       profileDiv.innerHTML = `
-        <h3>${profile.firstName} ${profile.lastName}</h3>
+        <h3>${profile.profileName}</h3>
         <p>Email: ${profile.emailAddress}</p>
         <button class="fillButton" data-index="${index}">Fill Form</button>
         <button class="editButton" data-index="${index}">Edit</button>
@@ -62,6 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function fillForm(profile) {
+    if (locked) {
+      alert('Extension is locked. Unlock to fill forms.');
+      return;
+    }
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -113,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchTerm = searchInput.value.toLowerCase();
     const filteredProfiles = profiles.filter(profile => {
       return (
+        profile.profileName.toLowerCase().includes(searchTerm) ||
         profile.firstName.toLowerCase().includes(searchTerm) ||
         profile.lastName.toLowerCase().includes(searchTerm) ||
         profile.emailAddress.toLowerCase().includes(searchTerm)

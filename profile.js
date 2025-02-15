@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to populate the form with profile data
   function populateForm(profile) {
+    document.getElementById('profileName').value = profile.profileName || '';
     document.getElementById('firstName').value = profile.firstName || '';
     document.getElementById('middleName').value = profile.middleName || '';
     document.getElementById('lastName').value = profile.lastName || '';
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
 
     const profile = {
+      profileName: document.getElementById('profileName').value,
       firstName: document.getElementById('firstName').value,
       middleName: document.getElementById('middleName').value,
       lastName: document.getElementById('lastName').value,
