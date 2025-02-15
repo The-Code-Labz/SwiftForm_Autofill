@@ -1,6 +1,8 @@
 body {
   width: 300px;
   padding: 10px;
+  background-color: #222;
+  color: #fff;
 }
 
 label {
@@ -13,8 +15,19 @@ input[type="email"],
 input[type="password"] {
   width: 100%;
   margin-bottom: 10px;
+  background-color: #444;
+  border: none;
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
 }
 
 button {
   margin-top: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
 }
