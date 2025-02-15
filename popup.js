@@ -79,7 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
       'ssn': ['ssn', 'socialSecurityNumber'],
       'emailAddress': ['emailAddress', 'email', 'emailId', 'email_address'],
       'username': ['username', 'userName', 'user_name', 'uname'],
-      'password': ['password', 'pwd']
+      'password': ['password', 'pwd'],
+      'fullName': ['fullName']
     };
 
     for (const field in fields) {
@@ -100,6 +101,32 @@ document.addEventListener('DOMContentLoaded', function() {
               console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
             }
             return; // Skip the default filling logic
+          }
+        } else if (field === 'fullName') {
+          // Handle full name splitting
+          const fullName = profile[field] || '';
+          const nameParts = fullName.split(' ');
+          if (nameParts.length >= 2) {
+            const firstName = nameParts[0];
+            const lastName = nameParts.slice(1).join(' ');
+
+            // Find and fill first name and last name fields
+            fields['firstName'].forEach(firstNameName => {
+              const firstNameElements = document.querySelectorAll(`input[name*="${firstNameName}" i], input[id*="${firstNameName}" i]`);
+              firstNameElements.forEach(el => {
+                el.value = firstName;
+              });
+            });
+
+            fields['lastName'].forEach(lastNameName => {
+              const lastNameElements = document.querySelectorAll(`input[name*="${lastNameName}" i], input[id*="${lastNameName}" i]`);
+              lastNameElements.forEach(el => {
+                el.value = lastName;
+              });
+            });
+            return;
+          } else {
+            console.warn('Full name format in profile is incorrect. Expected format: First Last');
           }
         }
 
