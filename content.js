@@ -39,6 +39,21 @@ function setFormValues(profile) {
             console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
           }
           return; // Skip the default filling logic
+        } else {
+          // If split fields are not found, fill the single SSN field if it exists
+          elements.forEach(element => {
+            if (element) {
+              if (element.tagName === 'SELECT') {
+                // For dropdowns, set the selected option
+                const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
+                if (optionToSelect) {
+                  optionToSelect.selected = true;
+                }
+              } else {
+                element.value = profile[field] || '';
+              }
+            }
+          });
         }
       } else if (field === 'fullName') {
         // Handle full name splitting
@@ -66,21 +81,23 @@ function setFormValues(profile) {
         } else {
           console.warn('Full name format in profile is incorrect. Expected format: First Last');
         }
-      }
-
-      elements.forEach(element => {
-        if (element) {
-          if (element.tagName === 'SELECT') {
-            // For dropdowns, set the selected option
-            const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
-            if (optionToSelect) {
-              optionToSelect.selected = true;
+      } else {
+        elements.forEach(element => {
+          if (element) {
+            if (element.tagName === 'SELECT') {
+              // For dropdowns, set the selected option
+              const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
+              if (optionToSelect) {
+                optionToSelect.selected = true;
+              } else if (element.options.length > 0) {
+                  element.options[0].selected = true;
+              }
+            } else {
+              element.value = profile[field] || '';
             }
-          } else {
-            element.value = profile[field] || '';
           }
-        }
-      });
+        });
+      }
     });
   }
 }

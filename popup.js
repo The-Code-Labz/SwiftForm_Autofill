@@ -104,6 +104,21 @@ document.addEventListener('DOMContentLoaded', function() {
               console.warn('SSN format in profile is incorrect. Expected format: XXX-XX-XXXX');
             }
             return; // Skip the default filling logic
+          } else {
+            // If split fields are not found, fill the single SSN field if it exists
+            elements.forEach(element => {
+              if (element) {
+                if (element.tagName === 'SELECT') {
+                  // For dropdowns, set the selected option
+                  const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
+                  if (optionToSelect) {
+                    optionToSelect.selected = true;
+                  }
+                } else {
+                  element.value = profile[field] || '';
+                }
+              }
+            });
           }
         } else if (field === 'fullName') {
           // Handle full name splitting
@@ -131,21 +146,21 @@ document.addEventListener('DOMContentLoaded', function() {
           } else {
             console.warn('Full name format in profile is incorrect. Expected format: First Last');
           }
-        }
-
-        elements.forEach(element => {
-          if (element) {
-            if (element.tagName === 'SELECT') {
-              // For dropdowns, set the selected option
-              const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
-              if (optionToSelect) {
-                optionToSelect.selected = true;
+        } else {
+          elements.forEach(element => {
+            if (element) {
+              if (element.tagName === 'SELECT') {
+                // For dropdowns, set the selected option
+                const optionToSelect = Array.from(element.options).find(option => option.value === profile[field] || option.textContent === profile[field]);
+                if (optionToSelect) {
+                  optionToSelect.selected = true;
+                }
+              } else {
+                element.value = profile[field] || '';
               }
-            } else {
-              element.value = profile[field] || '';
             }
-          }
-        });
+          });
+        }
       });
     }
   }
@@ -162,17 +177,16 @@ document.addEventListener('DOMContentLoaded', function() {
       );
     });
     displayProfiles(filteredProfiles);
-  });
+  }
 
   // Add profile functionality
   addProfileButton.addEventListener('click', function() {
     // Open a new tab or window to add a profile
     chrome.tabs.create({ url: 'profile.html' });
-  });
+  }
 
   function editProfile(index) {
     chrome.storage.sync.set({ 'editIndex': index }, function() {
       chrome.tabs.create({ url: 'profile.html?edit=true' });
-    });
-  }
+    }
 });
