@@ -98,15 +98,13 @@ body {
   flex-direction: column;
 }
 
-.profile h3,
-.link h3 {
+.profile h3 {
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 16px;
 }
 
-.profile p,
-.link p {
+.profile p {
   margin: 0;
   font-size: 0.9em;
   color: #ccc;
