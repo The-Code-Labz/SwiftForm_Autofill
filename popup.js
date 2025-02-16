@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('search');
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
+  const settingsButton = document.querySelector('.settings-button'); // Get the settings button
 
   let profiles = [];
   let links = [];
@@ -210,6 +211,9 @@ document.addEventListener('DOMContentLoaded', function() {
       displayLinks(filteredLinks);
     }
   });
+
+  // Settings button functionality
+  settingsButton.addEventListener('click', openSettings);
 });
 
 function openSettings() {
