@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add/Edit Link</title>
+  <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+  <div class="container">
+    <div class="profile-icon">
+      <!-- Add profile icon here -->
+    </div>
+
+    <form id="linkForm">
+      <label for="title">Title (required):</label>
+      <input type="text" id="title" name="title" required><br>
+
+      <label for="url">URL (required):</label>
+      <input type="url" id="url" name="url" required><br>
+
+      <label for="note">Note:</label>
+      <textarea id="note" name="note"></textarea><br>
+
+      <div class="buttons">
+        <button type="submit" class="save">Save</button>
+        <button type="button" class="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <script src="link.js"></script>
+</body>
+</html>

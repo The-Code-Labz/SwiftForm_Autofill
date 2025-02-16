@@ -1,4 +1,4 @@
-console.log('Form Autofill content script running.');
+console.log('SwiftForm Autofill content script running.');
 
 function setFormValues(profile) {
   const fields = {

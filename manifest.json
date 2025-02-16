@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "SwiftForm Autofill",
   "version": "1.0",
-  "description": "Automates form filling with profile management.",
+  "description": "Automates form filling with profile and link management.",
   "permissions": [
     "storage",
     "activeTab",
@@ -24,6 +24,7 @@
   "background": {
     "service_worker": "background.js"
   },
+  "options_page": "settings.html",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

@@ -33,7 +33,7 @@ body {
 }
 
 .settings-button {
-  background-image: url('images/settings.png'); /* Replace with your settings icon */
+  background-image: url('images/settings.png');
   background-size: cover;
   width: 24px;
   height: 24px;
@@ -52,18 +52,44 @@ body {
   cursor: pointer;
 }
 
-.profiles-title {
+.tab-buttons {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.tab-button {
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.tab-button.active {
+  background-color: #498af2;
+}
+
+.tab-content {
+  margin-bottom: 10px;
+}
+
+.profiles-title,
+.links-title {
   font-size: 18px;
   margin-bottom: 10px;
 }
 
-#profiles {
+#profiles,
+#links {
   flex-grow: 1;
   overflow-y: auto;
   padding-right: 10px;
 }
 
-.profile {
+.profile,
+.link {
   background-color: #2c3e50;
   border-radius: 10px;
   padding: 15px;
@@ -72,19 +98,22 @@ body {
   flex-direction: column;
 }
 
-.profile h3 {
+.profile h3,
+.link h3 {
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 16px;
 }
 
-.profile p {
+.profile p,
+.link p {
   margin: 0;
   font-size: 0.9em;
   color: #ccc;
 }
 
-.profile-buttons {
+.profile-buttons,
+.link-buttons {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
@@ -92,7 +121,8 @@ body {
 
 .fill-button,
 .edit-button,
-.delete-button {
+.delete-button,
+.open-button {
   background-color: #498af2;
   color: #fff;
   border: none;
@@ -101,6 +131,24 @@ body {
   cursor: pointer;
   margin-left: 5px;
   font-size: 0.8em;
+}
+
+.add-link-button {
+  background-color: #498af2;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#search {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 /* Scrollbar styling */

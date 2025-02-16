@@ -1,3 +1,3 @@
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('Form Autofill Extension installed.');
+  console.log('SwiftForm Autofill Extension installed.');
 });
