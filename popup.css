@@ -33,7 +33,7 @@ body {
 }
 
 .settings-button {
-  background-image: url('images/settings.png');
+  background-image: url('images/new_settings.png'); /* Replace with your settings icon */
   background-size: cover;
   width: 24px;
   height: 24px;
