@@ -1,33 +1,47 @@
 document.addEventListener('DOMContentLoaded', function() {
   const profileList = document.getElementById('profileList');
   const profilesTab = document.getElementById('profiles-tab');
-  const settingsTab = document.getElementById('settings-tab');
+  const linksTab = document.getElementById('links-tab'); // Get the links tab
+  const profilesContent = document.getElementById('profiles');
+  const linksContent = document.getElementById('links');
+  const addProfileButton = document.getElementById('addProfile');
+  const fillFormButton = document.getElementById('fillForm');
 
-  // Function to switch to the Profiles tab
-  function switchToProfilesTab() {
-    profilesTab.classList.add('active');
-    settingsTab.classList.remove('active');
-    document.getElementById('profiles').style.display = 'block';
-    document.getElementById('settings').style.display = 'none';
-    loadProfiles(); // Reload profiles when switching back
+  // Function to switch tabs
+  function switchTab(tabId) {
+    // Remove active class from all tab buttons and hide all tab content
+    [profilesTab, linksTab].forEach(tab => tab.classList.remove('active'));
+      [profilesContent, linksContent].forEach(content => content.style.display = 'none');
+
+    // Add active class to the clicked tab and show corresponding content
+    document.getElementById(tabId + '-tab').classList.add('active');
+    document.getElementById(tabId).style.display = 'block';
+
+    if (tabId === 'profiles') {
+      loadProfiles(); // Reload profiles when switching to the Profiles tab
+    }
   }
 
-    // Function to switch to the Settings tab
-    function switchToSettingsTab() {
-        settingsTab.classList.add('active');
-        profilesTab.classList.remove('active');
-        document.getElementById('settings').style.display = 'block';
-        document.getElementById('profiles').style.display = 'none';
-    }
-
   // Event listener for Profiles tab
-  profilesTab.addEventListener('click', switchToProfilesTab);
+  if (profilesTab) {
+    profilesTab.addEventListener('click', () => switchTab('profiles'));
+  } else {
+    console.error("profilesTab element not found");
+  }
 
-    // Event listener for Settings tab
-    settingsTab.addEventListener('click', switchToSettingsTab);
+  // Event listener for Links tab
+    if (linksTab) {
+        linksTab.addEventListener('click', () => switchTab('links'));
+    } else {
+        console.error("linksTab element not found");
+    }
 
   // Load profiles
   function loadProfiles() {
+    if (!profileList) {
+      console.error("profileList element not found");
+      return;
+    }
     chrome.storage.sync.get('profiles', function(data) {
       const profiles = data.profiles || [];
       profileList.innerHTML = ''; // Clear existing list
@@ -73,59 +87,59 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Load profiles on popup load
-  loadProfiles();
-
   // Add Profile button
-  const addProfileButton = document.getElementById('addProfile');
-  addProfileButton.addEventListener('click', function() {
-    chrome.tabs.create({ url: 'profile.html' });
-  });
+    if(addProfileButton) {
+        addProfileButton.addEventListener('click', function() {
+            chrome.tabs.create({ url: 'profile.html' });
+        });
+    } else {
+        console.error("addProfileButton element not found");
+    }
 
   // Fill Form button
-const fillFormButton = document.getElementById('fillForm');
-fillFormButton.addEventListener('click', function() {
-  const selectedProfileIndex = profileList.querySelector('.selected')?.getAttribute('data-index');
-  console.log('Fill Form button clicked. Selected profile index:', selectedProfileIndex);
+    if (fillFormButton) {
+        fillFormButton.addEventListener('click', function() {
+            const selectedProfileIndex = profileList.querySelector('.selected')?.getAttribute('data-index');
+            console.log('Fill Form button clicked. Selected profile index:', selectedProfileIndex);
 
-  if (selectedProfileIndex !== undefined && selectedProfileIndex !== null) {
-    chrome.storage.sync.get('profiles', function(data) {
-      const profiles = data.profiles || [];
-      const selectedProfile = profiles[selectedProfileIndex];
-      console.log('Selected profile data:', selectedProfile);
+            if (selectedProfileIndex !== undefined && selectedProfileIndex !== null) {
+                chrome.storage.sync.get('profiles', function(data) {
+                    const profiles = data.profiles || [];
+                    const selectedProfile = profiles[selectedProfileIndex];
+                    console.log('Selected profile data:', selectedProfile);
 
-      // Send message to background script
-      chrome.runtime.sendMessage({ message: "fillForm", profile: selectedProfile }, function(response) {
-          console.log("Response from background script:", response);
-      });
-    });
-  } else {
-    console.warn('No profile selected.');
-    alert('Please select a profile to fill the form.');
-  }
-});
-
+                    // Send message to background script
+                    chrome.runtime.sendMessage({ message: "fillForm", profile: selectedProfile }, function(response) {
+                        console.log("Response from background script:", response);
+                    });
+                });
+            } else {
+                console.warn('No profile selected.');
+                alert('Please select a profile to fill the form.');
+            }
+        });
+    } else {
+        console.error("fillFormButton element not found");
+    }
 
   // Select profile
-  profileList.addEventListener('click', function(event) {
-    if (event.target.tagName === 'LI') {
-      const selectedIndex = event.target.getAttribute('data-index');
-      const allProfiles = profileList.querySelectorAll('li');
+    if (profileList) {
+        profileList.addEventListener('click', function(event) {
+            if (event.target.tagName === 'LI') {
+                const selectedIndex = event.target.getAttribute('data-index');
+                const allProfiles = profileList.querySelectorAll('li');
 
-      allProfiles.forEach(function(profile) {
-        profile.classList.remove('selected');
-      });
+                allProfiles.forEach(function(profile) {
+                    profile.classList.remove('selected');
+                });
 
-      event.target.classList.add('selected');
+                event.target.classList.add('selected');
+            }
+        });
+    } else {
+        console.error("profileList element not found in select profile listener");
     }
-  });
 
-    // Event listener for Settings tab
-    document.getElementById('settings-tab').addEventListener('click', function() {
-        // Switch to Settings tab
-        document.getElementById('profiles-tab').classList.remove('active');
-        this.classList.add('active');
-        document.getElementById('profiles').style.display = 'none';
-        document.getElementById('settings').style.display = 'block';
-    });
+  // Initial load (show Profiles tab by default)
+  switchTab('profiles');
 });

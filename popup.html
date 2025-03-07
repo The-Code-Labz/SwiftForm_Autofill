@@ -15,20 +15,21 @@
     </div>
 
     <div class="tab-buttons">
-      <button class="tab-button active" data-tab="profiles">Profiles</button>
-      <button class="tab-button" data-tab="links">Links</button>
+      <button id="profiles-tab" class="tab-button active" data-tab="profiles">Profiles</button>
+      <button id="links-tab" class="tab-button" data-tab="links">Links</button>
     </div>
 
-    <div class="tab-content" id="profiles-tab">
+    <div class="tab-content" id="profiles" style="display: block;">
       <h2 class="profiles-title">Your Profiles</h2>
-      <div id="profiles">
+      <ul id="profileList">
         <!-- Profiles will be displayed here -->
-      </div>
+      </ul>
+      <button id="fillForm">Fill Form</button>
     </div>
 
-    <div class="tab-content" id="links-tab" style="display: none;">
+    <div class="tab-content" id="links" style="display: none;">
       <h2 class="links-title">Your Links</h2>
-      <div id="links">
+      <div id="linksList">
         <!-- Links will be displayed here -->
       </div>
       <button id="addLink" class="add-link-button">Add Link</button>
