@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
       profileDiv.classList.add('profile');
       profileDiv.innerHTML = `
         <h3>${profile.profileName}</h3>
-        <p>${profile.firstName} ${profile.lastName}</p>
+        <p>${profile.fullName}</p>
         <div class="profile-buttons">
           <button class="fill-button" data-index="${index}">Fill</button>
           <button class="edit-button" data-index="${index}">Edit</button>
@@ -195,8 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
       filteredProfiles = profiles.filter(profile => {
         return (
           profile.profileName.toLowerCase().includes(searchTerm) ||
-          profile.firstName.toLowerCase().includes(searchTerm) ||
-          profile.lastName.toLowerCase().includes(searchTerm) ||
+          profile.fullName.toLowerCase().includes(searchTerm) ||
           profile.emailAddress.toLowerCase().includes(searchTerm)
         );
       });
