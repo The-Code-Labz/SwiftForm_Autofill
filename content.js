@@ -1,6 +1,7 @@
 console.log('SwiftForm Autofill content script running.');
 
 function setFormValues(profile) {
+  console.log('setFormValues called with profile:', profile);
   const fields = {
     'firstName': ['firstName', 'givenName', 'fname', 'fName'],
     'middleName': ['middleName', 'mName', 'middleInitial'],

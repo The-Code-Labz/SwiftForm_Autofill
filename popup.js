@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
       fillButtons.forEach(button => {
         button.addEventListener('click', function() {
           const index = this.dataset.index;
+          console.log('Fill button clicked for profile:', profiles[index]);
           fillForm(profiles[index]);
         });
       });
@@ -117,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function fillForm(profile) {
+    console.log('fillForm called with profile:', profile);
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
