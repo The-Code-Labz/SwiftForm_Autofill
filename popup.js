@@ -1,222 +1,131 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const profilesDiv = document.getElementById('profiles');
-  const linksDiv = document.getElementById('links');
+  const profileList = document.getElementById('profileList');
+  const profilesTab = document.getElementById('profiles-tab');
+  const settingsTab = document.getElementById('settings-tab');
+
+  // Function to switch to the Profiles tab
+  function switchToProfilesTab() {
+    profilesTab.classList.add('active');
+    settingsTab.classList.remove('active');
+    document.getElementById('profiles').style.display = 'block';
+    document.getElementById('settings').style.display = 'none';
+    loadProfiles(); // Reload profiles when switching back
+  }
+
+    // Function to switch to the Settings tab
+    function switchToSettingsTab() {
+        settingsTab.classList.add('active');
+        profilesTab.classList.remove('active');
+        document.getElementById('settings').style.display = 'block';
+        document.getElementById('profiles').style.display = 'none';
+    }
+
+  // Event listener for Profiles tab
+  profilesTab.addEventListener('click', switchToProfilesTab);
+
+    // Event listener for Settings tab
+    settingsTab.addEventListener('click', switchToSettingsTab);
+
+  // Load profiles
+  function loadProfiles() {
+    chrome.storage.sync.get('profiles', function(data) {
+      const profiles = data.profiles || [];
+      profileList.innerHTML = ''; // Clear existing list
+
+      if (profiles.length === 0) {
+        profileList.innerHTML = '<li class="no-profiles">No profiles created yet.</li>';
+      } else {
+        profiles.forEach(function(profile, index) {
+          const listItem = document.createElement('li');
+          listItem.textContent = profile.profileName;
+          listItem.setAttribute('data-index', index);
+
+          // Add edit button
+          const editButton = document.createElement('button');
+          editButton.textContent = 'Edit';
+          editButton.classList.add('edit-button');
+          editButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            chrome.storage.sync.set({ 'editIndex': index }, function() {
+              chrome.tabs.create({ url: 'profile.html?edit=true' });
+            });
+          });
+
+          // Add delete button
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.classList.add('delete-button');
+          deleteButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to delete this profile?')) {
+              profiles.splice(index, 1);
+              chrome.storage.sync.set({ 'profiles': profiles }, function() {
+                loadProfiles(); // Reload profiles after deletion
+              });
+            }
+          });
+
+          listItem.appendChild(editButton);
+          listItem.appendChild(deleteButton);
+          profileList.appendChild(listItem);
+        });
+      }
+    });
+  }
+
+  // Load profiles on popup load
+  loadProfiles();
+
+  // Add Profile button
   const addProfileButton = document.getElementById('addProfile');
-  const addLinkButton = document.getElementById('addLink');
-  const searchInput = document.getElementById('search');
-  const tabButtons = document.querySelectorAll('.tab-button');
-  const tabContents = document.querySelectorAll('.tab-content');
-  const settingsButton = document.querySelector('.settings-button'); // Get the settings button
-
-  let profiles = [];
-  let links = [];
-  let activeTab = 'profiles';
-
-  // Load data from storage
-  loadData();
-
-  function loadData() {
-    chrome.storage.sync.get(['profiles', 'links'], function(data) {
-      profiles = data.profiles || [];
-      links = data.links || [];
-      updateUI();
-    });
-  }
-
-  function saveData() {
-    chrome.storage.sync.set({ 'profiles': profiles, 'links': links });
-  }
-
-  function updateUI() {
-    displayProfiles(profiles);
-    displayLinks(links);
-  }
-
-  function displayProfiles(profilesToDisplay) {
-    profilesDiv.innerHTML = '';
-    profilesToDisplay.forEach((profile, index) => {
-      const profileDiv = document.createElement('div');
-      profileDiv.classList.add('profile');
-      profileDiv.innerHTML = `
-        <h3>${profile.profileName}</h3>
-        <p>${profile.fullName}</p>
-        <div class="profile-buttons">
-          <button class="fill-button" data-index="${index}">Fill</button>
-          <button class="edit-button" data-index="${index}">Edit</button>
-          <button class="delete-button" data-index="${index}">Delete</button>
-        </div>
-      `;
-      profilesDiv.appendChild(profileDiv);
-
-      const fillButtons = profileDiv.querySelectorAll('.fill-button');
-      fillButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.dataset.index;
-          console.log('Fill button clicked for profile:', profiles[index]);
-          fillForm(profiles[index]);
-        });
-      });
-
-      const editButtons = profileDiv.querySelectorAll('.edit-button');
-      editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.dataset.index;
-          editProfile(index);
-        });
-      });
-
-      const deleteButtons = profileDiv.querySelectorAll('.delete-button');
-      deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.dataset.index;
-          deleteProfile(index);
-        });
-      });
-    });
-  }
-
-  function displayLinks(linksToDisplay) {
-    linksDiv.innerHTML = '';
-    linksToDisplay.forEach((link, index) => {
-      const linkDiv = document.createElement('div');
-      linkDiv.classList.add('link');
-      linkDiv.innerHTML = `
-        <h3>${link.title}</h3>
-        <p>${link.url}</p>
-        <div class="link-buttons">
-          <button class="open-button" data-index="${index}">Open</button>
-          <button class="edit-button" data-index="${index}">Edit</button>
-          <button class="delete-button" data-index="${index}">Delete</button>
-        </div>
-      `;
-      linksDiv.appendChild(linkDiv);
-
-      const openButtons = linkDiv.querySelectorAll('.open-button');
-      openButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.dataset.index;
-          openLink(links[index].url);
-        });
-      });
-
-      const editButtons = linkDiv.querySelectorAll('.edit-button');
-      editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.dataset.index;
-          editLink(index);
-        });
-      });
-
-      const deleteButtons = linkDiv.querySelectorAll('.delete-button');
-      deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const index = this.dataset.index;
-          deleteLink(index);
-        });
-      });
-    });
-  }
-
-  function fillForm(profile) {
-    console.log('fillForm called with profile:', profile);
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-      chrome.scripting.executeScript({
-        target: { tabId: tabs[0].id },
-        function: setFormValues,
-        args: [profile]
-      });
-    });
-  }
-
-  function setFormValues(profile) {
-    // This function is defined in content.js
-    // It is executed in the context of the web page
-  }
-
-  function openLink(url) {
-    chrome.tabs.create({ url: url });
-  }
-
-  function editProfile(index) {
-    chrome.storage.sync.set({ 'editIndex': index, 'editType': 'profile' }, function() {
-      chrome.tabs.create({ url: 'profile.html?edit=true' });
-    });
-  }
-
-  function editLink(index) {
-    chrome.storage.sync.set({ 'editIndex': index, 'editType': 'link' }, function() {
-      chrome.tabs.create({ url: 'link.html?edit=true' });
-    });
-  }
-
-  function deleteProfile(index) {
-    profiles.splice(index, 1);
-    saveData();
-    updateUI();
-  }
-
-  function deleteLink(index) {
-    links.splice(index, 1);
-    saveData();
-    updateUI();
-  }
-
-  // Add profile functionality
   addProfileButton.addEventListener('click', function() {
     chrome.tabs.create({ url: 'profile.html' });
   });
 
-  // Add link functionality
-  addLinkButton.addEventListener('click', function() {
-    chrome.tabs.create({ url: 'link.html' });
-  });
+  // Fill Form button
+const fillFormButton = document.getElementById('fillForm');
+fillFormButton.addEventListener('click', function() {
+  const selectedProfileIndex = profileList.querySelector('.selected')?.getAttribute('data-index');
+  console.log('Fill Form button clicked. Selected profile index:', selectedProfileIndex);
 
-  // Tab switching functionality
-  tabButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Deactivate all tabs and hide all content
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      tabContents.forEach(content => content.style.display = 'none');
+  if (selectedProfileIndex !== undefined && selectedProfileIndex !== null) {
+    chrome.storage.sync.get('profiles', function(data) {
+      const profiles = data.profiles || [];
+      const selectedProfile = profiles[selectedProfileIndex];
+      console.log('Selected profile data:', selectedProfile);
 
-      // Activate the clicked tab and show its content
-      const tabId = this.dataset.tab;
-      this.classList.add('active');
-      document.getElementById(tabId + '-tab').style.display = 'block';
-
-      activeTab = tabId;
+      // Send message to background script
+      chrome.runtime.sendMessage({ message: "fillForm", profile: selectedProfile }, function(response) {
+          console.log("Response from background script:", response);
+      });
     });
-  });
+  } else {
+    console.warn('No profile selected.');
+    alert('Please select a profile to fill the form.');
+  }
+});
 
-  // Search functionality
-  searchInput.addEventListener('input', function() {
-    const searchTerm = searchInput.value.toLowerCase();
-    let filteredProfiles = [];
-    let filteredLinks = [];
 
-    if (activeTab === 'profiles') {
-      filteredProfiles = profiles.filter(profile => {
-        return (
-          profile.profileName.toLowerCase().includes(searchTerm) ||
-          profile.fullName.toLowerCase().includes(searchTerm) ||
-          profile.emailAddress.toLowerCase().includes(searchTerm)
-        );
+  // Select profile
+  profileList.addEventListener('click', function(event) {
+    if (event.target.tagName === 'LI') {
+      const selectedIndex = event.target.getAttribute('data-index');
+      const allProfiles = profileList.querySelectorAll('li');
+
+      allProfiles.forEach(function(profile) {
+        profile.classList.remove('selected');
       });
-      displayProfiles(filteredProfiles);
-    } else if (activeTab === 'links') {
-      filteredLinks = links.filter(link => {
-        return (
-          link.title.toLowerCase().includes(searchTerm) ||
-          link.url.toLowerCase().includes(searchTerm)
-        );
-      });
-      displayLinks(filteredLinks);
+
+      event.target.classList.add('selected');
     }
   });
 
-  // Settings button functionality
-  settingsButton.addEventListener('click', openSettings);
+    // Event listener for Settings tab
+    document.getElementById('settings-tab').addEventListener('click', function() {
+        // Switch to Settings tab
+        document.getElementById('profiles-tab').classList.remove('active');
+        this.classList.add('active');
+        document.getElementById('profiles').style.display = 'none';
+        document.getElementById('settings').style.display = 'block';
+    });
 });
-
-function openSettings() {
-  chrome.runtime.openOptionsPage();
-}

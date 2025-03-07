@@ -111,8 +111,13 @@ function setFormValues(profile) {
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
+    console.log("Received message in content script:", request);
     if (request.message === "fillForm") {
+      console.log("Message type is fillForm. Profile data:", request.profile);
       setFormValues(request.profile);
+      sendResponse({status: "Form filling initiated."}); // Send a response
+    } else {
+      sendResponse({status: "Message not recognized."}); // Send a response for unrecognized messages
     }
   }
 );
