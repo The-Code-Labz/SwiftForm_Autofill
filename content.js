@@ -22,7 +22,10 @@ function setFormValues(profile) {
 
   for (const field in fields) {
     fields[field].forEach(name => {
-      let elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i], select[id*="${name}" i]`);
+      // Use more specific selectors to target input fields
+      let elements = document.querySelectorAll(`input[name*="${name}" i], input[id*="${name}" i], textarea[name*="${name}" i], select[name*="${name}" i]`);
+
+      console.log(`Field: ${field}, Selector: ${name}, Found ${elements.length} elements`);
 
       if (field === 'ssn') {
         // Handle split SSN fields with identifiers ssn_1, ssn_2, ssn_3
