@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "SwiftForm Autofill",
   "version": "1.0",
-  "description": "Automates form filling with profile and link management.",
+  "description": "Autofill forms with ease.",
   "permissions": [
     "storage",
     "activeTab",
@@ -24,17 +24,25 @@
   "background": {
     "service_worker": "background.js"
   },
-  "options_page": "settings.html",
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["images/icon16.png", "images/icon48.png", "images/icon128.png", "images/settings.png", "images/new_settings.png"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "images/*.png",
+        "*.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }
