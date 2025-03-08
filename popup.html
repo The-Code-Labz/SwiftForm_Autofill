@@ -5,38 +5,22 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1 class="logo">SwiftEntry</h1>
-      <div class="header-buttons">
-        <button class="settings-button" onclick="openSettings()"></button>
-        <button id="addProfile" class="new-profile-button">New Profile</button>
-      </div>
-    </div>
-
-    <div class="tab-buttons">
-      <button id="profiles-tab" class="tab-button active" data-tab="profiles">Profiles</button>
-      <button id="links-tab" class="tab-button" data-tab="links">Links</button>
-    </div>
-
-    <div class="tab-content" id="profiles" style="display: block;">
-      <h2 class="profiles-title">Your Profiles</h2>
-      <ul id="profileList">
-        <!-- Profiles will be displayed here -->
-      </ul>
-      <button id="fillForm">Fill Form</button>
-    </div>
-
-    <div class="tab-content" id="links" style="display: none;">
-      <h2 class="links-title">Your Links</h2>
-      <div id="linksList">
-        <!-- Links will be displayed here -->
-      </div>
-      <button id="addLink" class="add-link-button">Add Link</button>
-    </div>
-
-    <input type="text" id="search" placeholder="Search">
+  <div class="tab-container">
+    <button id="profiles-tab" class="tab-button active">Profiles</button>
+    <button id="links-tab" class="tab-button">Links</button>
   </div>
+
+  <div id="profiles" class="tab-content">
+    <h2>Profiles</h2>
+    <ul id="profileList"></ul>
+    <button id="addProfile">Add Profile</button>
+  </div>
+
+  <div id="links" class="tab-content">
+    <h2>Links</h2>
+    <!-- Content for links will go here -->
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
