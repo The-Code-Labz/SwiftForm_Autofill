@@ -122,26 +122,32 @@ document.addEventListener('DOMContentLoaded', function() {
     console.error("fillFormButton element not found");
   }
 
-  // Select profile -  FIXED LOGIC HERE
-  if (profileList) {
-    profileList.addEventListener('click', function(event) {
-      // Find the closest LI element (handles clicks on child elements)
-      const listItem = event.target.closest('li');
+// Select profile - DEBUGGING VERSION
+if (profileList) {
+  profileList.addEventListener('click', function(event) {
+    console.log("profileList click event triggered");
+    const listItem = event.target.closest('li');
+    console.log("Clicked element:", event.target);
+    console.log("Closest li:", listItem);
 
-      if (listItem && profileList.contains(listItem)) {
-        // Remove 'selected' class from all list items
-        const allProfiles = profileList.querySelectorAll('li');
-        allProfiles.forEach(function(profile) {
-          profile.classList.remove('selected');
-        });
+    if (listItem && profileList.contains(listItem)) {
+      console.log("Valid list item clicked");
+      const allProfiles = profileList.querySelectorAll('li');
+      allProfiles.forEach(function(profile) {
+        console.log("Removing 'selected' from:", profile);
+        profile.classList.remove('selected');
+      });
 
-        // Add 'selected' class to the clicked list item
-        listItem.classList.add('selected');
-      }
-    });
-  } else {
-    console.error("profileList element not found in select profile listener");
-  }
+      console.log("Adding 'selected' to:", listItem);
+      listItem.classList.add('selected');
+      console.log("classList after adding:", listItem.classList);
+    } else {
+      console.log("Clicked element is not a valid list item within profileList");
+    }
+  });
+} else {
+  console.error("profileList element not found in select profile listener");
+}
 
   // Initial load (show Profiles tab by default)
   switchTab('profiles');

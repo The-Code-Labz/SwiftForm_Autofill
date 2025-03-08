@@ -169,6 +169,6 @@ body {
 
 /* Style for selected profile */
 #profileList li.selected {
-  background-color: #498af2; /* Highlight color */
-  color: white;
+  background-color: #498af2 !important; /* Highlight color */
+  color: white !important;
 }
