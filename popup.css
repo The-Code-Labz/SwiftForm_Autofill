@@ -166,3 +166,9 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
+
+/* Style for selected profile */
+#profileList li.selected {
+  background-color: #498af2; /* Highlight color */
+  color: white;
+}
